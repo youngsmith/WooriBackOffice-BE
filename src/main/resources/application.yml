@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: local # 기본 환경 선택
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    hikari:
+      username: manager
+      password: duddus186213!
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://localhost:5432/woori
+
+  flyway:
+    enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
