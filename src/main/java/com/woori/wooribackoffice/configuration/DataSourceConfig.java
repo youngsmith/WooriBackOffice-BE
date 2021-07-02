@@ -1,7 +1,6 @@
 package com.woori.wooribackoffice.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.Properties;
 
 @EnableJpaRepositories(basePackages = "com.woori.wooribackoffice.repository")
 @EnableTransactionManagement
@@ -29,12 +29,13 @@ public class DataSourceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(false);
+        vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.woori.wooribackoffice");
         factory.setDataSource(getDataSource());
+        factory.setJpaProperties(additionalProperties());
         return factory;
     }
 
@@ -43,5 +44,12 @@ public class DataSourceConfig {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory);
         return txManager;
+    }
+
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+
+        return properties;
     }
 }
