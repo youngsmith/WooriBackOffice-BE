@@ -1,11 +1,15 @@
 package com.woori.wooribackoffice.domain.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -23,9 +27,6 @@ public class Farm extends AuditBaseEntity {
     private String owner;
 
     private String address;
-
-    @OneToMany(mappedBy = "farm")
-    private List<Examination> examinations = new ArrayList<>();
 
     @Override
     public String toString() {

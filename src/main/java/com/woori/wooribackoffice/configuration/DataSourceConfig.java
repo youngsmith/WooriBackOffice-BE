@@ -27,13 +27,12 @@ public class DataSourceConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.woori.wooribackoffice");
+        factory.setPackagesToScan("com.woori.wooribackoffice.domain.entity");
         factory.setDataSource(getDataSource());
         factory.setJpaProperties(additionalProperties());
         return factory;
@@ -49,7 +48,6 @@ public class DataSourceConfig {
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-
         return properties;
     }
 }

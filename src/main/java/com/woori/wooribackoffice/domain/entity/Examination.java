@@ -1,11 +1,12 @@
 package com.woori.wooribackoffice.domain.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -27,9 +28,6 @@ public class Examination extends AuditBaseEntity {
     @ManyToOne
     @JoinColumn(name = "farm_id")
     private Farm farm;
-
-    @OneToMany(mappedBy = "examination")
-    private List<ExaminationCategory> examinationCategories = new ArrayList<>();
 
     @Override
     public String toString() {

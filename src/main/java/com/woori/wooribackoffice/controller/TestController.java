@@ -7,11 +7,14 @@ import com.woori.wooribackoffice.repository.ExaminationCategoryRepository;
 import com.woori.wooribackoffice.repository.ExaminationRepository;
 import com.woori.wooribackoffice.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class TestController {
@@ -34,7 +37,19 @@ public class TestController {
 
         farmRepository.save(farm);
         examinationRepository.save(examination);
-        //examinationCategoryRepository.save(examinationCategory);
+        examinationCategoryRepository.save(examinationCategory);
+
+    }
+
+    @GetMapping("/update/{id}/{info}")
+    @Transactional
+    public void test2(@PathVariable("id") long id, @PathVariable("info") String info) {
+        log.info("GetMapping (/update/{id}) ; id : {}", id);
+
+        Farm farm = farmRepository.getById(id);
+        farm.address(info);
+
+
 
     }
 }
