@@ -46,10 +46,17 @@ public class TestController {
     public void test2(@PathVariable("id") long id, @PathVariable("info") String info) {
         log.info("GetMapping (/update/{id}) ; id : {}", id);
 
-        Farm farm = farmRepository.getById(id);
-        farm.address(info);
+//        Examination examination = examinationRepository.getById(1L);
+//        examination.farm(farmRepository.getById(2L));
+        Examination examination = examinationRepository.getById(1L);
+        examination.diagnosticResult(info);
+        examination.registrationNumber(info);
 
+        examinationCategoryRepository.deleteByExaminationId(1L);
 
+        ExaminationCategory examinationCategory = new ExaminationCategory().name(info)
+                .examination(examination);
 
+        examinationCategoryRepository.save(examinationCategory);
     }
 }

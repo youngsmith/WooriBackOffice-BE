@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExaminationCategoryRepository extends JpaRepository<ExaminationCategory, Long> {
+    long deleteByExaminationId(long id);
 }
