@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
-@EnableJpaRepositories(basePackages = "com.woori.wooribackoffice.repository")
+@EnableJpaRepositories(basePackages = "com.woori.wooribackoffice.repository")   // for repository scan
 @EnableTransactionManagement
 @Configuration
 // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
 public class DataSourceConfig {
     @Bean
-    @ConfigurationProperties("spring.datasource.hikari")
+    @ConfigurationProperties("spring.datasource.hikari")    // 가장 깔끔한 data source 설정 방법으로 생각됨
     HikariDataSource getDataSource() {
         return new HikariDataSource();
     }
@@ -32,7 +32,7 @@ public class DataSourceConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.woori.wooribackoffice.domain.entity");
+        factory.setPackagesToScan("com.woori.wooribackoffice.domain.entity");   // for entity package scan
         factory.setDataSource(getDataSource());
         factory.setJpaProperties(additionalProperties());
         return factory;
@@ -45,6 +45,9 @@ public class DataSourceConfig {
         return txManager;
     }
 
+    /**
+     * yml 파일에서 설정시 먹히지 않아서 이렇게 설정 시도
+     */
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");

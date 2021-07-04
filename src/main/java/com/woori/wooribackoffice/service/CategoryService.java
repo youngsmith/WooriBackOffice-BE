@@ -31,7 +31,7 @@ public class CategoryService {
     public ResponseEntity<String> updateCategory(final CategoryRequest categoryRequest) {
         Category category = categoryRepository.getById(categoryRequest.getId());
         category.update(categoryRequest);
-        categoryRepository.save(category);
+        categoryRepository.save(category);  // save 를 안해주면 저장이 되지 않음
         return ResponseEntity.ok().build();
     }
 }
