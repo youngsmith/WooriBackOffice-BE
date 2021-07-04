@@ -1,8 +1,8 @@
 package com.woori.wooribackoffice.controller;
 
-import com.woori.wooribackoffice.domain.entity.Examination;
-import com.woori.wooribackoffice.domain.entity.ExaminationCategory;
-import com.woori.wooribackoffice.domain.entity.Farm;
+import com.woori.wooribackoffice.domain.entity.ExaminationEntity;
+import com.woori.wooribackoffice.domain.entity.ExaminationCategoryEntity;
+import com.woori.wooribackoffice.domain.entity.FarmEntity;
 import com.woori.wooribackoffice.repository.ExaminationCategoryRepository;
 import com.woori.wooribackoffice.repository.ExaminationRepository;
 import com.woori.wooribackoffice.repository.FarmRepository;
@@ -25,19 +25,19 @@ public class TestController {
     @GetMapping("/test")
     @Transactional
     public void test() {
-        Farm farm = new Farm().address("강남구")
+        FarmEntity farmEntity = new FarmEntity().address("강남구")
                 .name("사랑농장")
                 .owner("장영연");
 
-        Examination examination = new Examination().diagnosticResult("정상")
-                .farm(farm);
+        ExaminationEntity examinationEntity = new ExaminationEntity()
+                .farmEntity(farmEntity);
 
-        ExaminationCategory examinationCategory = new ExaminationCategory().name("피검사")
-                .examination(examination);
+        ExaminationCategoryEntity examinationCategoryEntity = new ExaminationCategoryEntity().name("피검사")
+                .examinationEntity(examinationEntity);
 
-        farmRepository.save(farm);
-        examinationRepository.save(examination);
-        examinationCategoryRepository.save(examinationCategory);
+        farmRepository.save(farmEntity);
+        examinationRepository.save(examinationEntity);
+        examinationCategoryRepository.save(examinationCategoryEntity);
 
     }
 
@@ -45,18 +45,20 @@ public class TestController {
     @Transactional
     public void test2(@PathVariable("id") long id, @PathVariable("info") String info) {
         log.info("GetMapping (/update/{id}) ; id : {}", id);
-
+//  사장님 이름 /
 //        Examination examination = examinationRepository.getById(1L);
 //        examination.farm(farmRepository.getById(2L));
-        Examination examination = examinationRepository.getById(1L);
-        examination.diagnosticResult(info);
-        examination.registrationNumber(info);
+        ExaminationEntity examinationEntity = examinationRepository.getById(1L);
+        //examination.diagnosticResult(info);
+        examinationEntity.registrationNumber(info);
 
         examinationCategoryRepository.deleteByExaminationId(1L);
 
-        ExaminationCategory examinationCategory = new ExaminationCategory().name(info)
-                .examination(examination);
+        ExaminationCategoryEntity examinationCategoryEntity = new ExaminationCategoryEntity().name(info)
+                .examinationEntity(examinationEntity);
 
-        examinationCategoryRepository.save(examinationCategory);
+        examinationCategoryRepository.save(examinationCategoryEntity);
     }
+
+
 }

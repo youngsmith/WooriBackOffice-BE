@@ -14,28 +14,24 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class Examination extends AuditBaseEntity {
+public class ExaminationEntity extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "diagnostic_result")
-    private String diagnosticResult;
 
     @Column(name = "registration_number")
     private String registrationNumber;
 
     @ManyToOne
     @JoinColumn(name = "farm_id")
-    private Farm farm;
+    private FarmEntity farmEntity;
 
     @Override
     public String toString() {
         return "Examination{" +
                 "id=" + id +
-                ", diagnosticResult='" + diagnosticResult + '\'' +
                 ", registrationNumber='" + registrationNumber + '\'' +
-                ", farm=" + farm +
+                ", farm=" + farmEntity +
                 '}';
     }
 }

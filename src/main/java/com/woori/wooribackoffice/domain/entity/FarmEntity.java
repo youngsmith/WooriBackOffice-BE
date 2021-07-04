@@ -1,5 +1,6 @@
 package com.woori.wooribackoffice.domain.entity;
 
+import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.Id;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class Farm extends AuditBaseEntity {
+public class FarmEntity extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,5 +37,13 @@ public class Farm extends AuditBaseEntity {
                 ", owner='" + owner + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public void update(FarmRequest farmRequest) {
+
+    }
+
+    public static FarmEntity from(FarmRequest farmRequest) {
+        return new FarmEntity();
     }
 }

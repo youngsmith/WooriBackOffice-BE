@@ -1,9 +1,9 @@
 package com.woori.wooribackoffice.repository;
 
-import com.woori.wooribackoffice.domain.entity.ExaminationEntity;
+import com.woori.wooribackoffice.domain.entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExaminationRepository extends JpaRepository<ExaminationEntity, Long> {
+public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
 }

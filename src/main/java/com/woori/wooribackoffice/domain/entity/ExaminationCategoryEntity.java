@@ -12,23 +12,31 @@ import javax.persistence.*;
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
 @Table(name = "examination_category")
-public class ExaminationCategory extends AuditBaseEntity {
+public class ExaminationCategoryEntity extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "examination_id")
-    private Examination examination;
+    private ExaminationEntity examinationEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity categoryEntity;
 
     private String name;
+
+    private String result;
 
     @Override
     public String toString() {
         return "ExaminationCategory{" +
                 "id=" + id +
-                ", examination=" + examination +
+                ", examination=" + examinationEntity +
+                ", category=" + categoryEntity +
                 ", name='" + name + '\'' +
+                ", result='" + result + '\'' +
                 '}';
     }
 }
