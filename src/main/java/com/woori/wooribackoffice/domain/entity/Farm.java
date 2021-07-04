@@ -7,18 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@Accessors(fluent = true, chain = true)
+@Accessors(chain = true)
 @NoArgsConstructor
-public class FarmEntity extends AuditBaseEntity {
+@Table(name = "farm")
+public class Farm extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,7 +41,7 @@ public class FarmEntity extends AuditBaseEntity {
 
     }
 
-    public static FarmEntity from(FarmRequest farmRequest) {
-        return new FarmEntity();
+    public static Farm from(FarmRequest farmRequest) {
+        return new Farm();
     }
 }

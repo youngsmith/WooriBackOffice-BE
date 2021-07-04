@@ -2,7 +2,7 @@ package com.woori.wooribackoffice.service;
 
 import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
 import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
-import com.woori.wooribackoffice.domain.entity.FarmEntity;
+import com.woori.wooribackoffice.domain.entity.Farm;
 import com.woori.wooribackoffice.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 public class FarmService {
     private final FarmRepository farmRepository;
 
-    public FarmResponse getFarmById(long id) {
+    public FarmResponse getFarmById(final Long id) {
         return null;
     }
 
@@ -24,14 +24,14 @@ public class FarmService {
         return Collections.emptyList();
     }
 
-    public ResponseEntity<String> createFarm(FarmRequest farmRequest) {
-        farmRepository.save(FarmEntity.from(farmRequest));
+    public ResponseEntity<String> createFarm(final FarmRequest farmRequest) {
+        farmRepository.save(Farm.from(farmRequest));
         return null;
     }
 
-    public ResponseEntity<String> updateFarm(FarmRequest farmRequest) {
-        FarmEntity farmEntity = farmRepository.getById(1L);
-        farmEntity.update(farmRequest);
+    public ResponseEntity<String> updateFarm(final FarmRequest farmRequest) {
+        Farm farm = farmRepository.getById(1L);
+        farm.update(farmRequest);
         return null;
     }
 }

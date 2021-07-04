@@ -1,5 +1,6 @@
 package com.woori.wooribackoffice.domain.entity;
 
+import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class ExaminationEntity extends AuditBaseEntity {
+@Table(name = "examination")
+public class Examination extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,14 +26,22 @@ public class ExaminationEntity extends AuditBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "farm_id")
-    private FarmEntity farmEntity;
+    private Farm farm;
+
+    public void update (ExaminationRequest examinationRequest) {
+
+    }
+
+    public static Examination from(ExaminationRequest examinationRequest) {
+        return null;
+    }
 
     @Override
     public String toString() {
         return "Examination{" +
                 "id=" + id +
                 ", registrationNumber='" + registrationNumber + '\'' +
-                ", farm=" + farmEntity +
+                ", farm=" + farm +
                 '}';
     }
 }

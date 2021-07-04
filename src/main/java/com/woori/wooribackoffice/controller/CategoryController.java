@@ -16,12 +16,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public List<CategoryResponse> getAllCategories() {
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         return categoryService.getCategoryById(id);
     }
 

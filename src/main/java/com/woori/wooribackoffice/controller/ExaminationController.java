@@ -1,8 +1,8 @@
 package com.woori.wooribackoffice.controller;
 
-import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
-import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
-import com.woori.wooribackoffice.service.FarmService;
+import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
+import com.woori.wooribackoffice.domain.dto.response.ExaminationResponse;
+import com.woori.wooribackoffice.service.ExaminationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,25 +13,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/examination")
 public class ExaminationController {
-    private final FarmService farmService;
+    private final ExaminationService examinationService;
 
     @GetMapping("/")
-    public List<FarmResponse> getAllFarms() {
-        return farmService.getAllFarms();
+    public List<ExaminationResponse> getAllExaminations() {
+        return examinationService.getAllExaminations();
     }
 
     @GetMapping("/{id}")
-    public FarmResponse getFarmById(@PathVariable Long id) {
-        return farmService.getFarmById(id);
+    public ExaminationResponse getExaminationById(@PathVariable Long id) {
+        return examinationService.getExaminationById(id);
     }
 
     @PostMapping
-    public ResponseEntity<String> createFarm(@RequestBody FarmRequest farmRequest) {
-        return farmService.createFarm(farmRequest);
+    public ResponseEntity<String> createExamination(@RequestBody ExaminationRequest examinationRequest) {
+        return examinationService.createExamination(examinationRequest);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateFarm(@RequestBody FarmRequest farmRequest) {
-        return farmService.updateFarm(farmRequest);
+    public ResponseEntity<String> updateExamination(@RequestBody ExaminationRequest examinationRequest) {
+        return examinationService.updateExamination(examinationRequest);
     }
 }

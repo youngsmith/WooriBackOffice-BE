@@ -9,23 +9,21 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@Accessors(fluent = true, chain = true)
+@Accessors(chain = true)
 @NoArgsConstructor
 @Table(name = "examination_category")
-public class ExaminationCategoryEntity extends AuditBaseEntity {
+public class ExaminationCategory extends AuditBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "examination_id")
-    private ExaminationEntity examinationEntity;
+    private Examination examination;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private CategoryEntity categoryEntity;
-
-    private String name;
+    private Category category;
 
     private String result;
 
@@ -33,9 +31,8 @@ public class ExaminationCategoryEntity extends AuditBaseEntity {
     public String toString() {
         return "ExaminationCategory{" +
                 "id=" + id +
-                ", examination=" + examinationEntity +
-                ", category=" + categoryEntity +
-                ", name='" + name + '\'' +
+                ", examination=" + examination +
+                ", category=" + category +
                 ", result='" + result + '\'' +
                 '}';
     }
