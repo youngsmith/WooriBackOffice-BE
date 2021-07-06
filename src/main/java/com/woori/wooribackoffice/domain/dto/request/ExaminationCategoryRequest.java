@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FarmRequest {
+public class ExaminationCategoryRequest {
     private Long id;
-    private String address;
-    private String name;
-    private String owner;
+    private Long categoryId;
+    private String result;
 }

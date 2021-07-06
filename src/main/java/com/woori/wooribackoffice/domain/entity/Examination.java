@@ -8,12 +8,13 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@Accessors(fluent = true, chain = true)
+@Accessors(chain = true)
 @NoArgsConstructor
 @Table(name = "examination")
 public class Examination extends AuditBaseEntity {
@@ -28,12 +29,19 @@ public class Examination extends AuditBaseEntity {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    public void update (ExaminationRequest examinationRequest) {
+    @Column(name = "examination_date")
+    private LocalDate examinationDate;
 
+    public void update (ExaminationRequest examinationRequest, Farm farm) {
+        this.registrationNumber = examinationRequest.getRegistrationNumber();
+        this.examinationDate = examinationRequest.getExaminationDate();
+        this.farm = farm;
     }
 
-    public static Examination from(ExaminationRequest examinationRequest) {
-        return null;
+    public static Examination of(ExaminationRequest examinationRequest, Farm farm) {
+        return new Examination().setExaminationDate(examinationRequest.getExaminationDate())
+                .setFarm(farm)
+                .setRegistrationNumber(examinationRequest.getRegistrationNumber());
     }
 
     @Override

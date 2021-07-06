@@ -1,9 +1,15 @@
 package com.woori.wooribackoffice.domain.entity;
 
-import lombok.*;
+import com.woori.wooribackoffice.domain.dto.request.ExaminationCategoryRequest;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +32,18 @@ public class ExaminationCategory extends AuditBaseEntity {
     private Category category;
 
     private String result;
+
+    public static List<ExaminationCategory> from(List<ExaminationCategoryRequest> examinationCategoryRequests) {
+        List<ExaminationCategory> examinationCategories = new ArrayList<>();
+
+        for(ExaminationCategoryRequest examinationCategoryRequest : examinationCategoryRequests) {
+            ExaminationCategory examinationCategory = new ExaminationCategory().setResult(examinationCategoryRequest.getResult());
+
+            examinationCategories.add(examinationCategory);
+        }
+
+        return examinationCategories;
+    }
 
     @Override
     public String toString() {

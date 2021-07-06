@@ -41,6 +41,7 @@ public class Farm extends AuditBaseEntity {
 
     }
 
+
     public static Farm from(FarmRequest farmRequest) {
         return new Farm();
     }

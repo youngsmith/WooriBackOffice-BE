@@ -12,11 +12,13 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 public class CategoryResponse {
+    private Long id;
     private String name;
     private String description;
 
     public static CategoryResponse from(final Category category) {
         return new CategoryResponse()
+                .setId(category.getId())
                 .setDescription(category.getDescription())
                 .setName(category.getName());
     }
