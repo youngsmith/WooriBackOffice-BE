@@ -49,6 +49,12 @@ public class DataSourceConfig {
      * yml 파일에서 설정시 먹히지 않아서 이렇게 설정 시도
      */
     Properties additionalProperties() {
+        /*
+            "hibernate.hbm2ddl.auto","none",
+            "hibernate.dialect", dialectName,
+            "hibernate.open-in-view", "true",
+            "hibernate.format_sql", "true"
+         */
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         return properties;
