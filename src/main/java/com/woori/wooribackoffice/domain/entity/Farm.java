@@ -27,6 +27,12 @@ public class Farm extends AuditBaseEntity {
 
     private String address;
 
+    public void update(FarmRequest farmRequest) {
+        this.name = farmRequest.getName();
+        this.owner = farmRequest.getOwner();
+        this.address = farmRequest.getAddress();
+    }
+
     @Override
     public String toString() {
         return "Farm{" +
@@ -37,12 +43,9 @@ public class Farm extends AuditBaseEntity {
                 '}';
     }
 
-    public void update(FarmRequest farmRequest) {
-
-    }
-
-
     public static Farm from(FarmRequest farmRequest) {
-        return new Farm();
+        return new Farm().setAddress(farmRequest.getAddress())
+                .setName(farmRequest.getName())
+                .setOwner(farmRequest.getOwner());
     }
 }

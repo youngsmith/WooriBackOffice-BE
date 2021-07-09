@@ -19,7 +19,7 @@ public class ExaminationResponse {
     private FarmResponse farmResponse;
     private List<ExaminationCategoryResponse> examinationCategoryResponses;
 
-    public static ExaminationResponse of(Examination examination, List<ExaminationCategory> examinationCategories) {
+    public static ExaminationResponse of(final Examination examination, final List<ExaminationCategory> examinationCategories) {
         return new ExaminationResponse().setId(examination.getId())
                 .setExaminationDate(examination.getExaminationDate())
                 .setFarmResponse(FarmResponse.from(examination.getFarm()))

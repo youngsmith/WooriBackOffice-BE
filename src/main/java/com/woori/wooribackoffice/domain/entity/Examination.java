@@ -32,13 +32,13 @@ public class Examination extends AuditBaseEntity {
     @Column(name = "examination_date")
     private LocalDate examinationDate;
 
-    public void update (ExaminationRequest examinationRequest, Farm farm) {
+    public void update (final ExaminationRequest examinationRequest, final Farm farm) {
         this.registrationNumber = examinationRequest.getRegistrationNumber();
         this.examinationDate = examinationRequest.getExaminationDate();
         this.farm = farm;
     }
 
-    public static Examination of(ExaminationRequest examinationRequest, Farm farm) {
+    public static Examination of(final ExaminationRequest examinationRequest, final Farm farm) {
         return new Examination().setExaminationDate(examinationRequest.getExaminationDate())
                 .setFarm(farm)
                 .setRegistrationNumber(examinationRequest.getRegistrationNumber());

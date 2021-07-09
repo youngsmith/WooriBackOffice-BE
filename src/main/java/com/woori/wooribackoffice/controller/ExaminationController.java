@@ -7,18 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/examination")
 public class ExaminationController {
     private final ExaminationService examinationService;
-
-    @GetMapping("/")
-    public List<ExaminationResponse> getAllExaminations() {
-        return examinationService.getAllExaminations();
-    }
 
     @GetMapping("/{id}")
     public ExaminationResponse getExaminationById(@PathVariable Long id) {
@@ -27,11 +20,13 @@ public class ExaminationController {
 
     @PostMapping
     public ResponseEntity<String> createExamination(@RequestBody ExaminationRequest examinationRequest) {
-        return examinationService.createExamination(examinationRequest);
+        examinationService.createExamination(examinationRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
     public ResponseEntity<String> updateExamination(@RequestBody ExaminationRequest examinationRequest) {
-        return examinationService.updateExamination(examinationRequest);
+        examinationService.updateExamination(examinationRequest);
+        return ResponseEntity.ok().build();
     }
 }

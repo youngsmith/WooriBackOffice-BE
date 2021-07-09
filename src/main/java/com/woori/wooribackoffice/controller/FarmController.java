@@ -7,31 +7,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/farm")
 public class FarmController {
     private final FarmService farmService;
 
-    @GetMapping("/")
-    public List<FarmResponse> getAllFarms() {
-        return farmService.getAllFarms();
-    }
-
     @GetMapping("/{id}")
-    public FarmResponse getFarmById(@PathVariable Long id) {
-        return farmService.getFarmById(id);
+    public ResponseEntity<FarmResponse> getFarmById(@PathVariable Long id) {
+        return ResponseEntity.ok(farmService.getFarmById(id));
     }
 
     @PostMapping
     public ResponseEntity<String> createFarm(@RequestBody FarmRequest farmRequest) {
-        return farmService.createFarm(farmRequest);
+        farmService.createFarm(farmRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
     public ResponseEntity<String> updateFarm(@RequestBody FarmRequest farmRequest) {
-        return farmService.updateFarm(farmRequest);
+        farmService.updateFarm(farmRequest);
+        return ResponseEntity.ok().build();
     }
 }

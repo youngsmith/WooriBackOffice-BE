@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -33,11 +34,13 @@ public class ExaminationCategory extends AuditBaseEntity {
 
     private String result;
 
-    public static List<ExaminationCategory> from(List<ExaminationCategoryRequest> examinationCategoryRequests) {
+    public static List<ExaminationCategory> of(final Examination examination, final Map<Long, Category> categoryMapById, final List<ExaminationCategoryRequest> examinationCategoryRequests) {
         List<ExaminationCategory> examinationCategories = new ArrayList<>();
 
         for(ExaminationCategoryRequest examinationCategoryRequest : examinationCategoryRequests) {
-            ExaminationCategory examinationCategory = new ExaminationCategory().setResult(examinationCategoryRequest.getResult());
+            ExaminationCategory examinationCategory = new ExaminationCategory().setResult(examinationCategoryRequest.getResult())
+                    .setExamination(examination)
+                    .setCategory(categoryMapById.get(examinationCategoryRequest.getCategoryId()));
 
             examinationCategories.add(examinationCategory);
         }

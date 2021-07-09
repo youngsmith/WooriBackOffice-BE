@@ -5,11 +5,10 @@ import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
 import com.woori.wooribackoffice.domain.entity.Farm;
 import com.woori.wooribackoffice.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,21 +16,20 @@ public class FarmService {
     private final FarmRepository farmRepository;
 
     public FarmResponse getFarmById(final Long id) {
-        return null;
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+        return FarmResponse.from(farm);
     }
 
-    public List<FarmResponse> getAllFarms() {
-        return Collections.emptyList();
-    }
-
-    public ResponseEntity<String> createFarm(final FarmRequest farmRequest) {
+    @Transactional
+    public void createFarm(final FarmRequest farmRequest) {
         farmRepository.save(Farm.from(farmRequest));
-        return null;
     }
 
-    public ResponseEntity<String> updateFarm(final FarmRequest farmRequest) {
-        Farm farm = farmRepository.getById(1L);
-        farm.update(farmRequest);
-        return null;
+    @Transactional
+    public void updateFarm(final FarmRequest farmRequest) {
+        farmRepository.findById(farmRequest.getId())
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."))
+                .update(farmRequest);
     }
 }

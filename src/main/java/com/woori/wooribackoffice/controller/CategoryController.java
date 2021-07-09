@@ -17,21 +17,23 @@ public class CategoryController {
 
     @GetMapping("/")
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return categoryService.getAllCategories();
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id);
+        return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
     @PostMapping
     public ResponseEntity<String> createCategory(@RequestBody CategoryRequest categoryRequest) {
-        return categoryService.createCategory(categoryRequest);
+        categoryService.createCategory(categoryRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
     public ResponseEntity<String> updateCategory(@RequestBody CategoryRequest categoryRequest) {
-        return categoryService.updateCategory(categoryRequest);
+        categoryService.updateCategory(categoryRequest);
+        return ResponseEntity.ok().build();
     }
 }
