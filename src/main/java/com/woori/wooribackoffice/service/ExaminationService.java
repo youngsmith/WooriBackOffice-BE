@@ -13,9 +13,10 @@ import com.woori.wooribackoffice.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -38,7 +39,8 @@ public class ExaminationService {
         return ExaminationResponse.of(examination, examinationCategories);
     }
 
-    @Transactional
+    // https://interconnection.tistory.com/123 : @transactional 어떤 어노테이션을 사용해야 할까?
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void createExamination(final ExaminationRequest examinationRequest) {
         // getById 함수와 리턴값이 다름
         Farm farm = farmRepository.findById(examinationRequest.getFarmRequest().getId())
@@ -56,7 +58,7 @@ public class ExaminationService {
         examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateExamination(final ExaminationRequest examinationRequest) {
         Examination examination = examinationRepository.findById(examinationRequest.getId())
                 .orElseThrow(() -> new EntityNotFoundException("검사 정보를 찾기 못했습니다."));

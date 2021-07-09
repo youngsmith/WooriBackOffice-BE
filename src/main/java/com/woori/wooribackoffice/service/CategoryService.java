@@ -31,7 +31,8 @@ public class CategoryService {
     }
 
     public void updateCategory(final CategoryRequest categoryRequest) {
-        Category category = categoryRepository.getById(categoryRequest.getId());
+        Category category = categoryRepository.findById(categoryRequest.getId())
+                .orElseThrow(() -> new EntityNotFoundException("카테고리를 찾을 수 없습니다."));
         category.update(categoryRequest);
         categoryRepository.save(category);  // save 를 안해주면 저장이 되지 않음
     }

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +20,14 @@ public class FarmService {
         return FarmResponse.from(farm);
     }
 
-    @Transactional
     public void createFarm(final FarmRequest farmRequest) {
         farmRepository.save(Farm.from(farmRequest));
     }
 
-    @Transactional
     public void updateFarm(final FarmRequest farmRequest) {
-        farmRepository.findById(farmRequest.getId())
-                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."))
-                .update(farmRequest);
+        Farm farm = farmRepository.findById(farmRequest.getId())
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+        farm.update(farmRequest);
+        farmRepository.save(farm);
     }
 }

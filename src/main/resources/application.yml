@@ -11,8 +11,6 @@ spring:
     activate:
       on-profile: local
 
-
-
   datasource:
     hikari:
       username: manager
