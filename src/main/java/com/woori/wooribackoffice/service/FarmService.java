@@ -16,7 +16,7 @@ public class FarmService {
 
     public FarmResponse getFarmById(final Long id) {
         Farm farm = farmRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾을 수 없습니다."));
         return FarmResponse.from(farm);
     }
 
@@ -26,7 +26,7 @@ public class FarmService {
 
     public void updateFarm(final FarmRequest farmRequest) {
         Farm farm = farmRepository.findById(farmRequest.getId())
-                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾을 수 없습니다."));
         farm.update(farmRequest);
         farmRepository.save(farm);
     }

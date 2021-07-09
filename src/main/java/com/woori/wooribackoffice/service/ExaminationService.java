@@ -44,7 +44,7 @@ public class ExaminationService {
     public void createExamination(final ExaminationRequest examinationRequest) {
         // getById 함수와 리턴값이 다름
         Farm farm = farmRepository.findById(examinationRequest.getFarmRequest().getId())
-                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾지 못했습니다."));
 
         Examination examination = examinationRepository.save(Examination.of(examinationRequest, farm));
 
@@ -52,7 +52,7 @@ public class ExaminationService {
         Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategoryRequests()
                 .stream()
                 .map(e -> categoryRepository.findById(e.getCategoryId())
-                        .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾기 못했습니다.")))
+                        .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾지 못했습니다.")))
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
 
         examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
@@ -61,10 +61,10 @@ public class ExaminationService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateExamination(final ExaminationRequest examinationRequest) {
         Examination examination = examinationRepository.findById(examinationRequest.getId())
-                .orElseThrow(() -> new EntityNotFoundException("검사 정보를 찾기 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("검사 정보를 찾을 수 없습니다."));
 
         Farm farm = farmRepository.findById(examinationRequest.getFarmRequest().getId())
-                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾기 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾을 수 없습니다."));
 
         examination.update(examinationRequest, farm);
 
@@ -73,7 +73,7 @@ public class ExaminationService {
         Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategoryRequests()
                 .stream()
                 .map(e -> categoryRepository.findById(e.getCategoryId())
-                        .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾기 못했습니다.")))
+                        .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾을 수 없습니다.")))
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
 
         examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
