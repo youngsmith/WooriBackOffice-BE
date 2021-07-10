@@ -1,9 +1,16 @@
 package com.woori.wooribackoffice.configuration;
 
+import com.woori.wooribackoffice.repository.SelectMapper;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.session.AutoMappingBehavior;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -17,6 +24,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "com.woori.wooribackoffice.repository")   // for repository scan
 @EnableTransactionManagement
 @Configuration
+@MapperScan(basePackageClasses = {SelectMapper.class})
 // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
 public class DataSourceConfig {
     @Bean
@@ -58,5 +66,22 @@ public class DataSourceConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         return properties;
+    }
+
+    @Bean
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        sessionFactory.setDataSource(getDataSource());
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        sessionFactory.setMapperLocations(resolver.getResource("classpath:/mapper/SelectMapper.xml"));
+
+        org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
+        config.setMapUnderscoreToCamelCase(true);
+        config.setAutoMappingBehavior(AutoMappingBehavior.PARTIAL);
+        config.setJdbcTypeForNull(JdbcType.NULL);
+//        config.getTypeAliasRegistry().registerAliases("com.app.entity");
+        sessionFactory.setConfiguration(config);
+
+        return sessionFactory.getObject();
     }
 }

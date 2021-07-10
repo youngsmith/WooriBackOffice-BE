@@ -2,20 +2,30 @@ package com.woori.wooribackoffice.controller;
 
 import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
 import com.woori.wooribackoffice.domain.dto.response.ExaminationResponse;
+import com.woori.wooribackoffice.domain.etc.SearchParam;
+import com.woori.wooribackoffice.repository.SelectMapper;
 import com.woori.wooribackoffice.service.ExaminationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/examination")
 public class ExaminationController {
     private final ExaminationService examinationService;
+    private final SelectMapper selectMapper;
 
     @GetMapping("/{id}")
-    public ExaminationResponse getExaminationById(@PathVariable Long id) {
-        return examinationService.getExaminationById(id);
+    public ResponseEntity<ExaminationResponse> getExaminationById(@PathVariable Long id) {
+        return ResponseEntity.ok(examinationService.getExaminationById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExaminationResponse>> search(SearchParam searchParam) {
+        return ResponseEntity.ok(selectMapper.searchExaminations(searchParam));
     }
 
     @PostMapping

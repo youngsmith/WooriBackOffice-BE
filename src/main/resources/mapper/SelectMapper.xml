@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woori.wooribackoffice.repository.SelectMapper">
+    <select id="searchExaminations" resultMap="searchResultMap" parameterType="com.woori.wooribackoffice.domain.etc.SearchParam">
+        SELECT
+            ex.id
+             ,ex.examination_date
+             ,ex.registration_number
+             ,fm.id AS farm_id
+             ,fm.address AS farm_address
+             ,fm.name AS farm_name
+             ,fm.owner AS farm_owner
+             ,ec.id AS examination_category_id
+             ,ec.category_id AS category_id
+             ,ec.result AS category_result
+        FROM examination ex
+         INNER JOIN farm fm ON ex.farm_id = fm.id
+         INNER JOIN examination_category ec ON ec.examination_id = ex.id
+         INNER JOIN category cg ON cg.id = ec.category_id
+        <where>
+            <choose>
+                <when test="farmName != null and farmName != ''">
+                    fm.name LIKE concat('%', #{farmName}, '%')
+                </when>
+                <when test="farmOwner != null and farmOwner != ''">
+                    fm.owner LIKE concat('%', #{farmOwner}, '%')
+                </when>
+                <otherwise>
+                    1 != 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <resultMap id="searchResultMap" type="com.woori.wooribackoffice.domain.dto.response.ExaminationResponse">
+        <result property="id" column="id"/>
+        <result property="examinationDate" column="examination_date"/>
+        <result property="registrationNumber" column="registration_number"/>
+        <association property="farmResponse" javaType="com.woori.wooribackoffice.domain.dto.response.FarmResponse">
+            <id property="id" column="farm_id"/>
+            <result property="address" column="farm_address"/>
+            <result property="name" column="farm_name"/>
+            <result property="owner" column="farm_owner"/>
+        </association>
+        <collection property="examinationCategoryResponses" ofType="com.woori.wooribackoffice.domain.dto.response.ExaminationCategoryResponse">
+            <id property="id" column="examination_category_id"/>
+            <result property="categoryId" column="category_id"/>
+            <result property="result" column="category_result"/>
+        </collection>
+    </resultMap>
+</mapper>
