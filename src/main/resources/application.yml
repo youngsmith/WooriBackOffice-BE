@@ -21,4 +21,12 @@ spring:
   flyway:
     enabled: false
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 511913710332-rs8ep41966gsco2gh8ebelsk8ojfsaoh.apps.googleusercontent.com
+            client-secret: YgpTiOOg4kdbKi2aS6l1U3Gt
+
 
