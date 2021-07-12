@@ -43,6 +43,19 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.20'
 
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 test {

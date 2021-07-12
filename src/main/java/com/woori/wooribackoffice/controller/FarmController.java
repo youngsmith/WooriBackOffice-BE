@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/farm")
+@RequestMapping("/api/farm")
 public class FarmController {
     private final FarmService farmService;
 

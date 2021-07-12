@@ -1,8 +1,8 @@
 package com.woori.wooribackoffice.controller;
 
 import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
+import com.woori.wooribackoffice.domain.dto.request.SearchParam;
 import com.woori.wooribackoffice.domain.dto.response.ExaminationResponse;
-import com.woori.wooribackoffice.domain.etc.SearchParam;
 import com.woori.wooribackoffice.repository.SelectMapper;
 import com.woori.wooribackoffice.service.ExaminationService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/examination")
+@RequestMapping("/api/examination")
 public class ExaminationController {
     private final ExaminationService examinationService;
     private final SelectMapper selectMapper;

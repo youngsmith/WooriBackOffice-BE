@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woori.wooribackoffice.repository.SelectMapper">
-    <select id="searchExaminations" resultMap="searchResultMap" parameterType="com.woori.wooribackoffice.domain.etc.SearchParam">
+    <select id="searchExaminations" resultMap="searchResultMap" parameterType="com.woori.wooribackoffice.domain.dto.request.SearchParam">
         SELECT
             ex.id
              ,ex.examination_date

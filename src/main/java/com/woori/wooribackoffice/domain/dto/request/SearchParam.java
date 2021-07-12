@@ -1,4 +1,4 @@
-package com.woori.wooribackoffice.domain.etc;
+package com.woori.wooribackoffice.domain.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
