@@ -36,19 +36,18 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(UserRegisterRequest userRegisterRequest) {
-        ensureUserNameNotExist(userRegisterRequest.getUserName());
-        User user = userRegisterRequest.toUser();
-        user.setPassword(bCryptPasswordEncoder.encode(userRegisterRequest.getPassword()));
+        ensureUserNameNotExist(userRegisterRequest.getUsername());
+
+        userRegisterRequest.setPassword(bCryptPasswordEncoder.encode(userRegisterRequest.getPassword()));
+        User user = User.from(userRegisterRequest);
         userRepository.save(user);
 
-        Role studentRole = roleRepository.findByName(RoleType.USER.getName()).orElseThrow(() -> new RoleNotFoundException(ImmutableMap.of("roleName", RoleType.USER.getName())));
-        Role managerRole = roleRepository.findByName(RoleType.ADMIN.getName()).orElseThrow(() -> new RoleNotFoundException(ImmutableMap.of("roleName", RoleType.ADMIN.getName())));
-        userRoleRepository.save(new UserRole(user, studentRole));
-        userRoleRepository.save(new UserRole(user, managerRole));
+        Role adminRole = roleRepository.findByName(RoleType.ADMIN.getName()).orElseThrow(() -> new RoleNotFoundException(ImmutableMap.of("roleName", RoleType.ADMIN.getName())));
+        userRoleRepository.save(UserRole.of(user, adminRole));
     }
 
     public User findByName(String userName) {
-        return userRepository.findByUserName(userName)
+        return userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UserNameNotFoundException(ImmutableMap.of(USERNAME, userName)));
     }
 
@@ -65,10 +64,10 @@ public class UserService {
 
 
     public void delete(String userName) {
-        if (!userRepository.existsByUserName(userName)) {
+        if (!userRepository.existsByUsername(userName)) {
             throw new UserNameNotFoundException(ImmutableMap.of(USERNAME, userName));
         }
-        userRepository.deleteByUserName(userName);
+        userRepository.deleteByUsername(userName);
     }
 
     public Page<UserRepresentation> getAll(int pageNum, int pageSize) {
@@ -79,10 +78,9 @@ public class UserService {
         return this.bCryptPasswordEncoder.matches(currentPassword, password);
     }
 
-    private void ensureUserNameNotExist(String userName) {
-        boolean exist = userRepository.findByUserName(userName).isPresent();
-        if (exist) {
-            throw new UserNameAlreadyExistException(ImmutableMap.of(USERNAME, userName));
+    private void ensureUserNameNotExist(String username) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new UserNameAlreadyExistException(ImmutableMap.of(USERNAME, username));
         }
     }
 }

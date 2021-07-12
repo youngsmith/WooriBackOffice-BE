@@ -26,6 +26,9 @@ import static java.util.Collections.singletonList;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 /*
+    참고 프로젝트
+    https://github.com/Snailclimb/spring-security-jwt-guide
+
     Spring Method Security
     Spring Security supports authorization semantics at the method level.
     Typically, we could secure our service layer by, for example,
@@ -50,13 +53,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors(withDefaults())
                 // Disable CSRF
-                .csrf().disable()
-                .authorizeRequests()
+                .csrf().disable();
+
+        http.authorizeRequests()
                 // All other interfaces need to be authenticated before they can be requested
-                .anyRequest().authenticated()
-                .and()
+                .anyRequest().authenticated();
+
                 // Add custom filter : https://kangwoojin.github.io/programing/spring-security-basic-add-custom-filter/
-                .addFilterBefore(new JwtAuthorizationFilter(currentTokenRepository), BasicAuthenticationFilter.class)
+        http.addFilterBefore(new JwtAuthorizationFilter(currentTokenRepository), BasicAuthenticationFilter.class)
                 // No session required (no session created)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -84,7 +88,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
+        // 위 함수에서 http.authorizeRequests().antMatchers(HttpMethod.POST, SecurityConstants.SYSTEM_WHITELIST).permitAll()
+        // 위와 같이 권한에 관계없이 허락해줄 수 있지만, 디버깅 해본 결과 ignoring() 을 사용하면
+        // 필터를 아예 무시하므로 성능상 더 좋을 것으로 판단되어 사용
+
+        // trouble shooting : 맨 처음에 antMatchers("/auth/*") 으로 설정하여, /auth/logout 요청도 필터를 타지 않아서
+        // SecurityContextHolder.getContext().getAuthentication() 가 null 을 리턴함
+        // 이를 고치기 위해서 아래와 같이 login 시에만 필터를 타지 않도록 함
+        // 로그인 시에는 필터를 타지 않아도 전혀 상관이 없기 때문이다
+        // 중요한 결론 : 필터를 타면, Authorization 헤더 JWT 값을 파싱하여 SecurityContextHolder 에 authentication 을 set 한다
         web.ignoring()
-                .antMatchers("/auth/*");
+                .antMatchers("/auth/login", "/api/users");
     }
 }

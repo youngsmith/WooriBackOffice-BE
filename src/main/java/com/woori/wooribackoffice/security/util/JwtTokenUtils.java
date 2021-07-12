@@ -45,7 +45,7 @@ public class JwtTokenUtils {
                 .setId(user.getId().toString())
                 .setIssuer("SnailClimb")
                 .setIssuedAt(createdDate)
-                .setSubject(user.getUserName())
+                .setSubject(user.getUsername())
                 .setExpiration(expirationDate)
                 .compact();
 

@@ -1,6 +1,7 @@
 package com.woori.wooribackoffice.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woori.wooribackoffice.domain.dto.request.UserRegisterRequest;
 import com.woori.wooribackoffice.domain.dto.response.UserRepresentation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,15 +21,15 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "member")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userName;
+    private String username;
     private String password;
 
-    @Column(name = "isEnabled")
+    @Column(name = "is_enabled")
     private boolean enabled;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -43,7 +44,12 @@ public class User {
 
     public UserRepresentation toUserRepresentation() {
         return UserRepresentation.builder()
-                .userName(this.userName).build();
+                .userName(this.username).build();
     }
 
+    public static User from(UserRegisterRequest userRegisterRequest) {
+        return new User().setUsername(userRegisterRequest.getUsername())
+                .setEnabled(true)
+                .setPassword(userRegisterRequest.getPassword());
+    }
 }

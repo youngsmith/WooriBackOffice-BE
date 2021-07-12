@@ -14,7 +14,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
-@Table(name = "user_role")
+@Table(name = "member_role")
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +31,10 @@ public class UserRole {
     public UserRole(User user, Role role) {
         this.user = user;
         this.role = role;
+    }
+
+    public static UserRole of(User user, Role role) {
+        return new UserRole().setUser(user)
+                .setRole(role);
     }
 }

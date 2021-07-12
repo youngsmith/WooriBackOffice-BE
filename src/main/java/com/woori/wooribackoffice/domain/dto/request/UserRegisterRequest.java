@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterRequest {
-    private String userName;
+    private String username;
     private String password;
 
     public User toUser() {
         return new User()
-                .setUserName(this.getUserName())
+                .setUsername(this.getUsername())
                 .setEnabled(true);
     }
 }
