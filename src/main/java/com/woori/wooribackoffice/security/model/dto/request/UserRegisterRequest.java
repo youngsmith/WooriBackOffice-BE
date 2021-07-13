@@ -1,4 +1,4 @@
-package com.woori.wooribackoffice.domain.dto.request;
+package com.woori.wooribackoffice.security.model.dto.request;
 
 
 import com.woori.wooribackoffice.domain.entity.User;

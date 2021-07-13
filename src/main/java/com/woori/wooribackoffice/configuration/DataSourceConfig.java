@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
-@EnableJpaRepositories(basePackages = "com.woori.wooribackoffice.repository")   // for repository scan
+@EnableJpaRepositories(basePackages = {"com.woori.wooribackoffice.repository", "com.woori.wooribackoffice.security.repository"})   // for repository scan
 @EnableTransactionManagement
 @Configuration
 @MapperScan(basePackageClasses = {SelectMapper.class})

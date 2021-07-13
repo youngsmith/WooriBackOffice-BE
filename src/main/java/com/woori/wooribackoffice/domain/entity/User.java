@@ -1,8 +1,8 @@
 package com.woori.wooribackoffice.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.woori.wooribackoffice.domain.dto.request.UserRegisterRequest;
-import com.woori.wooribackoffice.domain.dto.response.UserRepresentation;
+import com.woori.wooribackoffice.security.model.dto.request.UserRegisterRequest;
+import com.woori.wooribackoffice.security.model.dto.request.UserRepresentation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

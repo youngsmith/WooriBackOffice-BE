@@ -1,8 +1,9 @@
 package com.woori.wooribackoffice.security.util;
 
 import com.woori.wooribackoffice.domain.entity.User;
-import com.woori.wooribackoffice.service.UserService;
+import com.woori.wooribackoffice.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,6 @@ public class CurrentUserUtils {
         if (authentication != null && authentication.getPrincipal() != null) {
             return (String) authentication.getPrincipal();
         }
-        return null;
+        return StringUtils.EMPTY;
     }
 }

@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * @description The filter processes all HTTP requests and
@@ -35,6 +36,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
 
+        log.info("REQUEST-IP({}) requests REQUEST-URI({})", request.getRemoteHost(), request.getRequestURI());
+
         String token = request.getHeader(SecurityConstants.TOKEN_HEADER); // 헤더에서 키값을 통해 토큰 추출
         // 토큰 기본 검사
         if (token == null || !token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
@@ -45,19 +48,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String tokenWithOutPrefix = token.replace(SecurityConstants.TOKEN_PREFIX, ""); // 토큰 prefix 제거
+        Long userId = JwtTokenUtils.getId(tokenWithOutPrefix);
+
+        // JWT 가 만료되면 알아서 exception 을 던짐을 확인하였음
+
         UsernamePasswordAuthenticationToken authentication = null;
         try {
             // redis 에 저장되어 있는 이전 토큰 값과 비교하여 다르면 리턴
-            String previousToken = currentTokenRepository.findByUserId(Long.parseLong(JwtTokenUtils.getId(tokenWithOutPrefix)))
+            String previousToken = currentTokenRepository.findByUserId(userId)
                     .orElse(CurrentToken.EMPTY)
                     .getToken();
 
             if (!token.equals(previousToken)) {
-                log.info("current token does not equal with previous token, or previous token does not exist");
+                log.error("current token does not equal with previous token, or previous token does not exist");
                 SecurityContextHolder.clearContext();
                 chain.doFilter(request, response);
                 return;
             }
+
             authentication = JwtTokenUtils.getAuthentication(tokenWithOutPrefix);
         } catch (JwtException e) {
             logger.error("Invalid jwt : " + e.getMessage());

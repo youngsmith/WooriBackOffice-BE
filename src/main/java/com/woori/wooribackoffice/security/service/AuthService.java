@@ -6,7 +6,6 @@ import com.woori.wooribackoffice.repository.CurrentTokenRepository;
 import com.woori.wooribackoffice.security.model.dto.request.LoginRequest;
 import com.woori.wooribackoffice.security.util.CurrentUserUtils;
 import com.woori.wooribackoffice.security.util.JwtTokenUtils;
-import com.woori.wooribackoffice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
@@ -33,11 +32,15 @@ public class AuthService {
             throw new BadCredentialsException("User is forbidden to login");
         }
 
-        String token = JwtTokenUtils.createToken(user, loginRequest.getRememberMe()); // 사용자 정보 기반으로 토큰 생성
+        String token = JwtTokenUtils.createToken(user); // 사용자 정보 기반으로 토큰 생성
 
-        currentTokenRepository.save(new CurrentToken()
-                .setToken(token)
-                .setUserId(user.getId())); // 토큰을 redis 에 저장해놓음
+        CurrentToken currentToken = currentTokenRepository.findByUserId(user.getId())
+                .orElseGet(CurrentToken::new); // 여러 번 로그인 시에도 문제 없도록 함
+
+        currentToken.setUserId(user.getId())
+                .setToken(token); // 토큰을 redis 에 저장해놓음
+
+        currentTokenRepository.save(currentToken);
 
         return token;
     }

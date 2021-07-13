@@ -1,4 +1,4 @@
-package com.woori.wooribackoffice.constant;
+package com.woori.wooribackoffice.security.constant;
 
 import lombok.Getter;
 

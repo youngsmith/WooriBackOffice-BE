@@ -1,6 +1,7 @@
 package com.woori.wooribackoffice.security.configuration;
 
 import com.woori.wooribackoffice.repository.CurrentTokenRepository;
+import com.woori.wooribackoffice.security.constant.RoleType;
 import com.woori.wooribackoffice.security.constant.SecurityConstants;
 import com.woori.wooribackoffice.security.exception.JwtAccessDeniedHandler;
 import com.woori.wooribackoffice.security.exception.JwtAuthenticationEntryPoint;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -28,6 +30,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 /*
     참고 프로젝트
     https://github.com/Snailclimb/spring-security-jwt-guide
+
+    CORS 설정
+    https://oddpoet.net/blog/2017/04/27/cors-with-spring-security/
 
     Spring Method Security
     Spring Security supports authorization semantics at the method level.
@@ -42,12 +47,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CurrentTokenRepository currentTokenRepository;
 
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,9 +58,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Disable CSRF
                 .csrf().disable();
 
-        http.authorizeRequests()
+        // CORS preflight 요청은 인증처리 없음, CORS semantic 상으로 CORS prefight에는 Authorization 헤더를 줄 이유가 없으므로 CORS preflight 요청에 대해서는 401 응답을 하면 안됨 - 작동
+//        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//                .and()
+        http.authorizeRequests().antMatchers("/api/**").hasRole(RoleType.ADMIN.getName())
+                .and()
                 // All other interfaces need to be authenticated before they can be requested
-                .anyRequest().authenticated();
+                .authorizeRequests().anyRequest().authenticated();
 
                 // Add custom filter : https://kangwoojin.github.io/programing/spring-security-basic-add-custom-filter/
         http.addFilterBefore(new JwtAuthorizationFilter(currentTokenRepository), BasicAuthenticationFilter.class)

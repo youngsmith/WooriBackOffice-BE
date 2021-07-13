@@ -1,4 +1,4 @@
-package com.woori.wooribackoffice.repository;
+package com.woori.wooribackoffice.security.repository;
 
 import com.woori.wooribackoffice.domain.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;

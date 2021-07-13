@@ -1,16 +1,14 @@
-package com.woori.wooribackoffice.domain.dto.request;
-
+package com.woori.wooribackoffice.security.model.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequest {
+@Builder
+public class UserRepresentation {
     private String userName;
-    private String password;
-    private Boolean enabled;
 }

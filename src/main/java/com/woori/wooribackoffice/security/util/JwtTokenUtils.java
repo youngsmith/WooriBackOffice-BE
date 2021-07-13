@@ -7,6 +7,7 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 public class JwtTokenUtils {
     /**
      * Generate enough secure random keys to be suitable for signature compliance
@@ -28,10 +29,9 @@ public class JwtTokenUtils {
 
     private static final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build();
 
-    public static String createToken(final User user, final boolean isRememberMe) {
-        final long expiration = isRememberMe ? SecurityConstants.EXPIRATION_REMEMBER : SecurityConstants.EXPIRATION;
+    public static String createToken(final User user) {
         final Date createdDate = new Date();
-        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+        final Date expirationDate = new Date(createdDate.getTime() + SecurityConstants.EXPIRATION); // (현재 시간) + 1800s
 
         final List<String> roles = user.getRoles()
                 .stream()
@@ -43,7 +43,7 @@ public class JwtTokenUtils {
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .claim(SecurityConstants.ROLE_CLAIMS, String.join(",", roles))
                 .setId(user.getId().toString())
-                .setIssuer("SnailClimb")
+                .setIssuer("woori")
                 .setIssuedAt(createdDate)
                 .setSubject(user.getUsername())
                 .setExpiration(expirationDate)
@@ -55,14 +55,19 @@ public class JwtTokenUtils {
     /**
      * 토큰을 파싱하여 id 추출
      */
-    public static String getId(final String token) {
-        return jwtParser.parseClaimsJws(token).getBody().getId();
+    public static Long getId(final String token) {
+        return Long.parseLong(jwtParser.parseClaimsJws(token).getBody().getId());
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(final String token) {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
         String userName = claims.getSubject();
         return new UsernamePasswordAuthenticationToken(userName, token, getAuthorities(claims));
+    }
+
+    public static Date getExpirationDate(final String token) {
+        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+        return claims.getExpiration();
     }
 
     private static List<SimpleGrantedAuthority> getAuthorities(final Claims claims) {

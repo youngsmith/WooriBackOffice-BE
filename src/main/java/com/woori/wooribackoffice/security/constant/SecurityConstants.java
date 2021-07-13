@@ -3,13 +3,7 @@ package com.woori.wooribackoffice.security.constant;
 public final class SecurityConstants {
     public static final String ROLE_CLAIMS = "rol";
 
-    /**
-     * rememberMe 为 false 的时候过期时间是1个小时
-     */
-    public static final long EXPIRATION = 60 * 60L;
-
-
-    public static final long EXPIRATION_REMEMBER = 60 * 60 * 24 * 7L;
+    public static final long EXPIRATION = 30 * 60 * 1000L;
 
     /**
      * The JWT signing key is hard-coded into the application code and should be stored in an environment variable or .properties file.

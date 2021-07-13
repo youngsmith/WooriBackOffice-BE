@@ -1,11 +1,7 @@
-package com.woori.wooribackoffice.controller;
+package com.woori.wooribackoffice.security.controller;
 
-import com.woori.wooribackoffice.domain.dto.request.UserRegisterRequest;
-import com.woori.wooribackoffice.service.UserService;
+import com.woori.wooribackoffice.security.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
