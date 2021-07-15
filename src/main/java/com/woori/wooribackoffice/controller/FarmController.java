@@ -29,4 +29,14 @@ public class FarmController {
         farmService.updateFarm(farmRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFarm(@PathVariable Long id) {
+        if(id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        farmService.deleteCategoryById(id);
+        return ResponseEntity.ok().build();
+    }
 }

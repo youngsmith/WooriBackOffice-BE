@@ -1,10 +1,9 @@
 package com.woori.wooribackoffice.security.model.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 public class LoginRequest {
     private String username;
     private String password;

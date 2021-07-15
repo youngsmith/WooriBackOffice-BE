@@ -30,4 +30,8 @@ public class FarmService {
         farm.update(farmRequest);
         farmRepository.save(farm);
     }
+
+    public void deleteCategoryById(final Long id) {
+        farmRepository.deleteById(id);
+    }
 }

@@ -36,4 +36,8 @@ public class CategoryService {
         category.update(categoryRequest);
         categoryRepository.save(category);  // save 를 안해주면 저장이 되지 않음
     }
+
+    public void deleteCategoryById(final Long id) {
+        categoryRepository.deleteById(id);
+    }
 }

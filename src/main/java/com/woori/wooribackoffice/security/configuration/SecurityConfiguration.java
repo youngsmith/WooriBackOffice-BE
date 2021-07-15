@@ -9,6 +9,7 @@ import com.woori.wooribackoffice.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,9 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -58,9 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
 
         // CORS preflight 요청은 인증처리 없음, CORS semantic 상으로 CORS prefight에는 Authorization 헤더를 줄 이유가 없으므로 CORS preflight 요청에 대해서는 401 응답을 하면 안됨 - 작동
-//        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                .and()
-        http.authorizeRequests().antMatchers("/api/**").hasRole(RoleType.ADMIN.getName())
+        http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**/*").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/api/**").hasRole(RoleType.ADMIN.getName())
                 .and()
                 // All other interfaces need to be authenticated before they can be requested
                 .authorizeRequests().anyRequest().authenticated();
@@ -77,20 +80,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // http.headers().frameOptions().disable();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(singletonList("*"));
-        // configuration.setAllowedOriginPatterns(singletonList("*"));
-        configuration.setAllowedHeaders(singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
-        configuration.setExposedHeaders(singletonList(SecurityConstants.TOKEN_HEADER));
-        configuration.setAllowCredentials(false);
-        configuration.setMaxAge(3600L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("*"));
+//        //configuration.setAllowedOriginPatterns(singletonList("*"));
+//        configuration.setAllowedHeaders(List.of("*"));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+//        //configuration.setExposedHeaders(singletonList(SecurityConstants.TOKEN_HEADER));
+//        //configuration.setAllowCredentials(false);
+//        //configuration.setMaxAge(3600L);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
     @Override
     public void configure(WebSecurity web) {
