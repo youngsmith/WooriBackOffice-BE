@@ -3,16 +3,27 @@ package com.woori.wooribackoffice.service;
 import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
 import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
 import com.woori.wooribackoffice.domain.entity.Farm;
+import com.woori.wooribackoffice.exception.ForeignKeyConstraintViolationException;
 import com.woori.wooribackoffice.repository.FarmRepository;
+import com.woori.wooribackoffice.repository.SelectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FarmService {
     private final FarmRepository farmRepository;
+    private final SelectMapper selectMapper;
+
+    public List<FarmResponse> getAllFarms() {
+        return farmRepository.findAll()
+                .stream().map(FarmResponse::from)
+                .collect(Collectors.toUnmodifiableList());
+    }
 
     public FarmResponse getFarmById(final Long id) {
         Farm farm = farmRepository.findById(id)
@@ -31,7 +42,11 @@ public class FarmService {
         farmRepository.save(farm);
     }
 
-    public void deleteCategoryById(final Long id) {
+    public void deleteFarmById(final Long id) {
+        if(selectMapper.examinationIsExistByFarmId(id)) {
+            throw new ForeignKeyConstraintViolationException("해당 농장은 삭제할 수 없습니다.");
+        }
+
         farmRepository.deleteById(id);
     }
 }

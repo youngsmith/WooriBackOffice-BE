@@ -3,7 +3,11 @@ package com.woori.wooribackoffice.service;
 import com.woori.wooribackoffice.domain.dto.request.CategoryRequest;
 import com.woori.wooribackoffice.domain.dto.response.CategoryResponse;
 import com.woori.wooribackoffice.domain.entity.Category;
+import com.woori.wooribackoffice.domain.entity.ExaminationCategory;
+import com.woori.wooribackoffice.exception.ForeignKeyConstraintViolationException;
 import com.woori.wooribackoffice.repository.CategoryRepository;
+import com.woori.wooribackoffice.repository.ExaminationCategoryRepository;
+import com.woori.wooribackoffice.repository.SelectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final SelectMapper selectMapper;
 
     public CategoryResponse getCategoryById(final Long id) {
         Category category = categoryRepository.findById(id)
@@ -38,6 +43,10 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(final Long id) {
+        if(selectMapper.examinationCategoryIsExistByCategoryId(id)) {
+            throw new ForeignKeyConstraintViolationException("해당 카테고리는 삭제할 수 없습니다.");
+        }
+
         categoryRepository.deleteById(id);
     }
 }

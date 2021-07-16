@@ -2,6 +2,7 @@ package com.woori.wooribackoffice.controller;
 
 import com.woori.wooribackoffice.domain.dto.request.CategoryRequest;
 import com.woori.wooribackoffice.domain.dto.response.CategoryResponse;
+import com.woori.wooribackoffice.exception.ForeignKeyConstraintViolationException;
 import com.woori.wooribackoffice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,15 +1,13 @@
 package com.woori.wooribackoffice.service;
 
 import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
+import com.woori.wooribackoffice.domain.dto.request.SearchParam;
 import com.woori.wooribackoffice.domain.dto.response.ExaminationResponse;
 import com.woori.wooribackoffice.domain.entity.Category;
 import com.woori.wooribackoffice.domain.entity.Examination;
 import com.woori.wooribackoffice.domain.entity.ExaminationCategory;
 import com.woori.wooribackoffice.domain.entity.Farm;
-import com.woori.wooribackoffice.repository.CategoryRepository;
-import com.woori.wooribackoffice.repository.ExaminationCategoryRepository;
-import com.woori.wooribackoffice.repository.ExaminationRepository;
-import com.woori.wooribackoffice.repository.FarmRepository;
+import com.woori.wooribackoffice.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,7 @@ public class ExaminationService {
     private final ExaminationCategoryRepository examinationCategoryRepository;
     private final FarmRepository farmRepository;
     private final CategoryRepository categoryRepository;
+    private final SelectMapper selectMapper;
 
     public ExaminationResponse getExaminationById(final Long id) {
         Examination examination = examinationRepository.findById(id)
@@ -77,5 +76,9 @@ public class ExaminationService {
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
 
         examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
+    }
+
+    public List<ExaminationResponse> searchExaminations(SearchParam searchParam) {
+        return selectMapper.searchExaminations(searchParam);
     }
 }

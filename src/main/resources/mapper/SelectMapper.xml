@@ -50,4 +50,20 @@
             <result property="result" column="category_result"/>
         </collection>
     </resultMap>
+
+    <select id="examinationCategoryIsExistByCategoryId" resultType="boolean">
+        SELECT EXISTS (
+                SELECT *
+                FROM examination_category
+                WHERE category_id = #{categoryId}
+            )
+    </select>
+
+    <select id="examinationIsExistByFarmId" resultType="boolean">
+        SELECT EXISTS (
+                       SELECT *
+                       FROM examination
+                       WHERE farm_id = #{farmId}
+                   )
+    </select>
 </mapper>

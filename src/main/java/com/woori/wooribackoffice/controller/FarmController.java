@@ -7,11 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/farm")
 public class FarmController {
     private final FarmService farmService;
+
+    @GetMapping
+    public ResponseEntity<List<FarmResponse>> getAllFarms() {
+        return ResponseEntity.ok(farmService.getAllFarms());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<FarmResponse> getFarmById(@PathVariable Long id) {
@@ -36,7 +43,7 @@ public class FarmController {
             return ResponseEntity.badRequest().build();
         }
 
-        farmService.deleteCategoryById(id);
+        farmService.deleteFarmById(id);
         return ResponseEntity.ok().build();
     }
 }

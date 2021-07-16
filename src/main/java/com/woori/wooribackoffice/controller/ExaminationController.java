@@ -3,6 +3,8 @@ package com.woori.wooribackoffice.controller;
 import com.woori.wooribackoffice.domain.dto.request.ExaminationRequest;
 import com.woori.wooribackoffice.domain.dto.request.SearchParam;
 import com.woori.wooribackoffice.domain.dto.response.ExaminationResponse;
+import com.woori.wooribackoffice.domain.entity.Examination;
+import com.woori.wooribackoffice.repository.ExaminationRepository;
 import com.woori.wooribackoffice.repository.SelectMapper;
 import com.woori.wooribackoffice.service.ExaminationService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/examination")
 public class ExaminationController {
     private final ExaminationService examinationService;
-    private final SelectMapper selectMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<ExaminationResponse> getExaminationById(@PathVariable Long id) {
@@ -25,7 +26,7 @@ public class ExaminationController {
 
     @GetMapping
     public ResponseEntity<List<ExaminationResponse>> search(SearchParam searchParam) {
-        return ResponseEntity.ok(selectMapper.searchExaminations(searchParam));
+        return ResponseEntity.ok(examinationService.searchExaminations(searchParam));
     }
 
     @PostMapping

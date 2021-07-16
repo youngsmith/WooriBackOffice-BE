@@ -10,4 +10,5 @@ import java.util.List;
 public interface ExaminationCategoryRepository extends JpaRepository<ExaminationCategory, Long> {
     long deleteByExaminationId(Long id);
     List<ExaminationCategory> findByExaminationId(Long id);
+    List<ExaminationCategory> findByCategoryId(Long id);
 }
