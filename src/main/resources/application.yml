@@ -23,6 +23,9 @@ spring:
   flyway:
     enabled: false
 
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
 #  security:
 #    oauth2:
 #      client:
