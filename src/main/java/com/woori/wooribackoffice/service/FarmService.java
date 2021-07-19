@@ -43,7 +43,7 @@ public class FarmService {
     }
 
     public void deleteFarmById(final Long id) {
-        if(selectMapper.examinationIsExistByFarmId(id)) {
+        if(selectMapper.isExaminationExistByFarmId(id)) {
             throw new ForeignKeyConstraintViolationException("해당 농장은 삭제할 수 없습니다.");
         }
 

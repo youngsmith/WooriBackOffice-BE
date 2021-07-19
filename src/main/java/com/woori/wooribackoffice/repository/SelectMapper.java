@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface SelectMapper {
     List<ExaminationResponse> searchExaminations(SearchParam searchParam);
-    boolean examinationCategoryIsExistByCategoryId(Long categoryId);
-    boolean examinationIsExistByFarmId(Long farmId);
+    boolean isExaminationCategoryExistByCategoryId(Long categoryId);
+    boolean isExaminationExistByFarmId(Long farmId);
+    boolean isExaminationCategoryExistByExaminationId(Long examinationId);
 }

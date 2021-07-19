@@ -37,4 +37,14 @@ public class ExaminationController {
         examinationService.updateExamination(examinationRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFarm(@PathVariable Long id) {
+        if(id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        examinationService.deleteExaminationById(id);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -51,7 +51,7 @@
         </collection>
     </resultMap>
 
-    <select id="examinationCategoryIsExistByCategoryId" resultType="boolean">
+    <select id="isExaminationCategoryExistByCategoryId" resultType="boolean">
         SELECT EXISTS (
                 SELECT *
                 FROM examination_category
@@ -59,11 +59,19 @@
             )
     </select>
 
-    <select id="examinationIsExistByFarmId" resultType="boolean">
+    <select id="isExaminationExistByFarmId" resultType="boolean">
         SELECT EXISTS (
                        SELECT *
                        FROM examination
                        WHERE farm_id = #{farmId}
+                   )
+    </select>
+
+    <select id="isExaminationCategoryExistByExaminationId" resultType="boolean">
+        SELECT EXISTS (
+                       SELECT *
+                       FROM examination_category
+                       WHERE examination_id = #{examinationId}
                    )
     </select>
 </mapper>
