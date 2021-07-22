@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
+    private final Long DEFAULT_CATEGORY_ID = 1L;
     private final CategoryRepository categoryRepository;
     private final SelectMapper selectMapper;
 
@@ -41,7 +42,7 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(final Long id) {
-        if(selectMapper.isExaminationCategoryExistByCategoryId(id)) {
+        if(DEFAULT_CATEGORY_ID.equals(id) || selectMapper.isExaminationCategoryExistByCategoryId(id)) {
             throw new ForeignKeyConstraintViolationException("해당 카테고리는 삭제할 수 없습니다.");
         }
 
