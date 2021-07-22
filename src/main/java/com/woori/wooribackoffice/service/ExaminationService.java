@@ -43,19 +43,19 @@ public class ExaminationService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void createExamination(final ExaminationRequest examinationRequest) {
         // getById 함수와 리턴값이 다름
-        Farm farm = farmRepository.findById(examinationRequest.getFarmRequest().getId())
+        Farm farm = farmRepository.findById(examinationRequest.getFarm().getId())
                 .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾지 못했습니다."));
 
         Examination examination = examinationRepository.save(Examination.of(examinationRequest, farm));
 
         // Map 으로 만들 때 중복 키 값이 있으면, exception 을 던짐 -> 의도적인 처리
-        Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategoryRequests()
+        Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategories()
                 .stream()
                 .map(e -> categoryRepository.findById(e.getCategoryId())
                         .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾지 못했습니다.")))
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
 
-        examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
+        examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategories()));
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -63,20 +63,20 @@ public class ExaminationService {
         Examination examination = examinationRepository.findById(examinationRequest.getId())
                 .orElseThrow(() -> new EntityNotFoundException("검사 정보를 찾을 수 없습니다."));
 
-        Farm farm = farmRepository.findById(examinationRequest.getFarmRequest().getId())
+        Farm farm = farmRepository.findById(examinationRequest.getFarm().getId())
                 .orElseThrow(() -> new EntityNotFoundException("농장 정보를 찾을 수 없습니다."));
 
         examination.update(examinationRequest, farm);
 
         examinationCategoryRepository.deleteByExaminationId(examinationRequest.getId());
 
-        Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategoryRequests()
+        Map<Long, Category> categoryMapById = examinationRequest.getExaminationCategories()
                 .stream()
                 .map(e -> categoryRepository.findById(e.getCategoryId())
                         .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾을 수 없습니다.")))
                 .collect(Collectors.toMap(Category::getId, Function.identity()));
 
-        examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategoryRequests()));
+        examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategories()));
     }
 
     public List<ExaminationResponse> searchExaminations(SearchParam searchParam) {

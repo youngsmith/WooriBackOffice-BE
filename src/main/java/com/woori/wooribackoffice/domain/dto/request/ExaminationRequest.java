@@ -12,6 +12,6 @@ public class ExaminationRequest {
     private Long id;
     private LocalDate examinationDate;
     private String registrationNumber;
-    private FarmRequest farmRequest;
-    private List<ExaminationCategoryRequest> examinationCategoryRequests;
+    private FarmRequest farm;
+    private List<ExaminationCategoryRequest> examinationCategories;
 }
