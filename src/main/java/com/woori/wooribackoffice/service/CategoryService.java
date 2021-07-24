@@ -35,6 +35,10 @@ public class CategoryService {
     }
 
     public void updateCategory(final CategoryRequest categoryRequest) {
+        if(DEFAULT_CATEGORY_ID.equals(categoryRequest.getId())) {
+            throw new ForeignKeyConstraintViolationException("해당 카테고리는 수정할 수 없습니다.");
+        }
+
         Category category = categoryRepository.findById(categoryRequest.getId())
                 .orElseThrow(() -> new EntityNotFoundException("카테고리를 찾을 수 없습니다."));
         category.update(categoryRequest);

@@ -1,6 +1,7 @@
 package com.woori.wooribackoffice.controller;
 
 import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
+import com.woori.wooribackoffice.domain.dto.request.SearchParam;
 import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
 import com.woori.wooribackoffice.service.FarmService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,12 @@ import java.util.List;
 public class FarmController {
     private final FarmService farmService;
 
-    @GetMapping
+    @GetMapping("/search")
+    public ResponseEntity<List<FarmResponse>> searchFarm(@RequestParam String farmName) {
+        return ResponseEntity.ok(farmService.searchFarm(farmName));
+    }
+
+    @GetMapping("/")
     public ResponseEntity<List<FarmResponse>> getAllFarms() {
         return ResponseEntity.ok(farmService.getAllFarms());
     }

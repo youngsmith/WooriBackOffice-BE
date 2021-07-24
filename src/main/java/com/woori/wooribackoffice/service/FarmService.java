@@ -1,6 +1,7 @@
 package com.woori.wooribackoffice.service;
 
 import com.woori.wooribackoffice.domain.dto.request.FarmRequest;
+import com.woori.wooribackoffice.domain.dto.request.SearchParam;
 import com.woori.wooribackoffice.domain.dto.response.FarmResponse;
 import com.woori.wooribackoffice.domain.entity.Farm;
 import com.woori.wooribackoffice.exception.ForeignKeyConstraintViolationException;
@@ -21,6 +22,13 @@ public class FarmService {
 
     public List<FarmResponse> getAllFarms() {
         return farmRepository.findAll()
+                .stream().map(FarmResponse::from)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<FarmResponse> searchFarm(String farmName) {
+        // https://www.baeldung.com/spring-jpa-like-queries
+        return farmRepository.findByNameContains(farmName)
                 .stream().map(FarmResponse::from)
                 .collect(Collectors.toUnmodifiableList());
     }

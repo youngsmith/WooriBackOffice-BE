@@ -22,7 +22,7 @@ public class ExaminationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExaminationResponse>> search(SearchParam searchParam) {
+    public ResponseEntity<List<ExaminationResponse>> searchExamination(SearchParam searchParam) {
         return ResponseEntity.ok(examinationService.searchExaminations(searchParam));
     }
 

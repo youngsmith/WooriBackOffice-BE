@@ -53,7 +53,7 @@ public class ExaminationService {
                 .stream()
                 .map(e -> categoryRepository.findById(e.getCategoryId())
                         .orElseThrow(() -> new EntityNotFoundException("카테고리 정보를 찾지 못했습니다.")))
-                .collect(Collectors.toMap(Category::getId, Function.identity()));
+                .collect(Collectors.toUnmodifiableMap(Category::getId, Function.identity()));
 
         examinationCategoryRepository.saveAll(ExaminationCategory.of(examination, categoryMapById, examinationRequest.getExaminationCategories()));
     }

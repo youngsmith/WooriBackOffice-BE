@@ -36,7 +36,7 @@ public class JwtTokenUtils {
         final List<String> roles = user.getRoles()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
 
         String tokenPrefix = Jwts.builder()
                 .setHeaderParam("type", SecurityConstants.TOKEN_TYPE)
@@ -74,6 +74,6 @@ public class JwtTokenUtils {
         String role = (String) claims.get(SecurityConstants.ROLE_CLAIMS);
         return Arrays.stream(role.split(","))
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 }
