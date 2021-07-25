@@ -1,5 +1,6 @@
 package com.woori.wooribackoffice.domain.dto.request;
 
+import com.woori.wooribackoffice.util.CustomStringUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,8 @@ public class ExaminationRequest {
     private String registrationNumber;
     private FarmRequest farm;
     private List<ExaminationCategoryRequest> examinationCategories;
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = CustomStringUtil.removeAllWhiteSpace(registrationNumber);
+    }
 }
