@@ -7,7 +7,6 @@ import com.woori.wooribackoffice.domain.entity.Category;
 import com.woori.wooribackoffice.domain.entity.Examination;
 import com.woori.wooribackoffice.domain.entity.ExaminationCategory;
 import com.woori.wooribackoffice.domain.entity.Farm;
-import com.woori.wooribackoffice.exception.ForeignKeyConstraintViolationException;
 import com.woori.wooribackoffice.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,11 +82,9 @@ public class ExaminationService {
         return selectMapper.searchExaminations(searchParam);
     }
 
+    @Transactional
     public void deleteExaminationById(Long id) {
-        if(selectMapper.isExaminationCategoryExistByExaminationId(id)) {
-            throw new ForeignKeyConstraintViolationException("해당 검사는 삭제할 수 없습니다.");
-        }
-
+        examinationCategoryRepository.deleteByExaminationId(id);
         examinationRepository.deleteById(id);
     }
 }

@@ -38,13 +38,13 @@
         <result property="id" column="id"/>
         <result property="examinationDate" column="examination_date"/>
         <result property="registrationNumber" column="registration_number"/>
-        <association property="farmResponse" javaType="com.woori.wooribackoffice.domain.dto.response.FarmResponse">
+        <association property="farm" javaType="com.woori.wooribackoffice.domain.dto.response.FarmResponse">
             <id property="id" column="farm_id"/>
             <result property="address" column="farm_address"/>
             <result property="name" column="farm_name"/>
             <result property="owner" column="farm_owner"/>
         </association>
-        <collection property="examinationCategoryResponses" ofType="com.woori.wooribackoffice.domain.dto.response.ExaminationCategoryResponse">
+        <collection property="examinationCategories" ofType="com.woori.wooribackoffice.domain.dto.response.ExaminationCategoryResponse">
             <id property="id" column="examination_category_id"/>
             <result property="categoryId" column="category_id"/>
             <result property="result" column="category_result"/>
