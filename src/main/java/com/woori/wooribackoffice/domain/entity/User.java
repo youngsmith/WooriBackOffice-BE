@@ -39,7 +39,7 @@ public class User {
     public List<SimpleGrantedAuthority> getRoles() {
         return userRoles.stream().map(UserRole::getRole)
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
 
     public UserRepresentation toUserRepresentation() {

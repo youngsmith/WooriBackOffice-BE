@@ -23,14 +23,14 @@ public class FarmService {
     public List<FarmResponse> getAllFarms() {
         return farmRepository.findAll()
                 .stream().map(FarmResponse::from)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
 
     public List<FarmResponse> searchFarm(String farmName) {
         // https://www.baeldung.com/spring-jpa-like-queries
         return farmRepository.findByNameContains(farmName)
                 .stream().map(FarmResponse::from)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
 
     public FarmResponse getFarmById(final Long id) {
